@@ -1,0 +1,3 @@
+[submodule "crawler/shovel"]
+	path = crawler/shovel
+	url = https://github.com/redolent/shovel.git
