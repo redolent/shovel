@@ -160,6 +160,7 @@
    <!-- by mark -->
    <field name="cost"     type="text_general" indexed="true" stored="true"/>
    <field name="date"     type="text_general" indexed="true" stored="true"/>
+   <field name="date_raw" type="text_general" indexed="true" stored="true"/>
    <field name="address"  type="text_general" indexed="true" stored="true"/>
 
 
