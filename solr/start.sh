@@ -1,0 +1,2 @@
+cd ../../solr
+./onboot.sh 
