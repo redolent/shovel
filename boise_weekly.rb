@@ -121,7 +121,11 @@ module Shovel
       
       address = listing.search('.descripTxt').first
       address.search('.//span').remove
-      address.text.split(' ').first << " Idaho"
+      #address.text #.split(' ').first # << " Idaho"
+      address = address.text
+      address.gsub! /\s+/, " "
+      address.gsub! "(map)", " "
+      address.strip!
     end
     
     def self.strip_phone listing
