@@ -15,6 +15,7 @@ module Shovel
       sub_url = case options[:when]
                 when 'today' then 'Today'
                 when 'next_week' then 'Next%207%20Days' 
+                when 'next_month' then 'Next%2030%20Days' 
                 when 'this_weekend' then 'This%20Weekend'
                 else 'Today'
                 end
