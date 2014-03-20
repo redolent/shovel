@@ -33,14 +33,14 @@ module Shovel
         listing.css('h3').css('a').each do |event_href|
           next unless event_href['href'].include? 'Event?oid='
           event_params[:title]        =  event_href.text.gsub(/\s+/, ' ').strip
-          event_params[:description]  =  strip_description listing
-          event_params[:category]     =  strip_category listing
-          event_params[:address]      =  strip_address listing
-          event_params[:venue]        =  strip_venue listing
-          #event_params[:phone]        =  strip_phone listing
+          event_params[:description]  =  strip_description  listing.clone
+          event_params[:category]     =  strip_category     listing.clone
+          event_params[:address]      =  strip_address      listing.clone
+          event_params[:venue]        =  strip_venue        listing.clone
+          #event_params[:phone]        =  strip_phone       listing.clone
           event_params[:bw_id]        =  strip_oid event_href
-          event_params[:cost]         =  strip_cost listing
-          event_params[:date_raw]     =  strip_date listing
+          event_params[:cost]         =  strip_cost         listing.clone
+          event_params[:date_raw]     =  strip_date         listing.clone
           event_params[:date]         =  parse_date event_params[:date_raw]
         end
         
@@ -108,7 +108,7 @@ module Shovel
     
     def self.strip_venue listing
       return if listing.nil? or listing.search('.locationLabel').empty?
-      listing.search('.locationLabel').search.text
+      listing.search('.locationLabel').first.text.strip
     end
     
     def self.strip_category listing
