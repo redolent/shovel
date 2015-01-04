@@ -163,6 +163,7 @@
    <field name="date"     type="text_general" indexed="true" stored="true"/>
    <field name="date_raw" type="text_general" indexed="true" stored="true"/>
    <field name="address"  type="text_general" indexed="true" stored="true"/>
+   <field name="venue"    type="text_general" indexed="true" stored="true"/>
 
 
    <!-- Main body of document extracted by SolrCell.
