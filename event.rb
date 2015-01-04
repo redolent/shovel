@@ -19,11 +19,18 @@ class Event
     attributes.each do |key, value|
       send("#{key}=", value) if respond_to?("#{key}=")
     end
+    @id = 'bw' + @bw_id
   end
 
   def to_json
-    json_string = Oj::dump self
-    json_string.slice!  '"^o":"Event",'
+    #hash = {}
+    #self.instance_variables.each do |var|
+    #  hash[var] = self.instance_variable_get var
+    #end
+    #hash.to_json
+    s = Oj::dump self
+    s = s.gsub('"^o":"Event",','')
+    s
   end
 
 end

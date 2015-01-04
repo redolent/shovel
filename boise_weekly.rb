@@ -17,12 +17,18 @@ module Shovel
                 when 'next_week' then 'Next%207%20Days' 
                 when 'next_month' then 'Next%2030%20Days' 
                 when 'this_weekend' then 'This%20Weekend'
-                else 'Today'
+                else
+                       print "ERROR "
+                       #print options
+                       print options[:when]
+                       print " is not set\n"
+                       exit
                 end
       
       $stderr.puts "Period: " + sub_url + "\n"  if options[:verbose]
       url = @base_url + sub_url
-      url << '&neighborhood=939889'
+      # url << '&neighborhood=939889'
+      url << '&neighborhood=' << options[:neighborhood]
       url << options[:param] if options[:param]
       
       $stderr.puts "Loading " + url + "\n"  if options[:verbose]
