@@ -98,6 +98,8 @@ module Shovel
           date_str.sub! /^([A-Za-z]+)+s,? /, "\\1, "
           time = DateTime.strptime(date_str, "%a, %l:%M %P").strftime("%s")
         else
+          date_str.sub! /^([A-Za-z]{0,3})[a-z]*,? /, "\\1, "
+          date_str.sub! /, *([A-Za-z]{0,3})[a-z]*/, ", \\1"
           time = DateTime.strptime(date_str, "%a, %b %e, %l:%M %P").strftime("%s")
         end
       rescue
@@ -112,9 +114,9 @@ module Shovel
     end
     
     def self.strip_category listing
-      return if listing.nil?
-      category = listing.css('.eventCategories').css('a').text
-      Categories::BoiseWeekly.parse_from_string category
+      return if listing.nil? or listing.search('.eventCategories').empty?
+      category =  listing.search('.eventCategories').first.text.strip
+      #Categories::BoiseWeekly.parse_from_string category
     end
     
     def self.strip_address listing
