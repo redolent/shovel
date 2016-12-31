@@ -73,19 +73,39 @@ module Shovel
       listing.css('h3').remove
       listing.css('.eventCategories').remove
       listing.css('.descripText').remove
+      listing.css('script').remove
       #header_stuff_we_dont_want       =  listing.css('h3').text
       #category_stuff_we_dont_want     =  listing.css('.eventCategories').text
       #description_stuff_we_dont_want  =  listing.css('.descripText').text
       #phone_stuff_we_dont_want        =  /[()0-9. \-]{7,}/
       
       all_stuff = listing.text
-      all_stuff.strip! # this has to be before any calls to slice
+      ##all_stuff.strip! # this has to be before any calls to slice
+      lines = all_stuff.lines.select do |line|
+          next false if line.strip.empty?
+          next true  if line.include? "p.m."
+          next true  if line.include? "a.m."
+          next true  if line.include? "Mon.,"
+          next true  if line.include? "Tue.,"
+          next true  if line.include? "Wed.,"
+          next true  if line.include? "Thu.,"
+          next true  if line.include? "Fri.,"
+          next true  if line.include? "Sat.,"
+          next true  if line.include? "Sun.,"
+          next true  if line.match    /[()0-9.\s\-]{7,}.*/m
+          next false
+      end
+
       #all_stuff.slice!  header_stuff_we_dont_want
       #all_stuff.slice!  category_stuff_we_dont_want
       #all_stuff.slice!  description_stuff_we_dont_want
       #all_stuff.slice!  phone_stuff_we_dont_want
-      all_stuff.slice!   /[()0-9.\s\-]{7,}.*/m
-      all_stuff
+
+      final = lines.first.strip
+      final.slice!   /[()0-9.\s\-]{7,}.*/m
+      final
+      ##all_stuff.slice!   /[()0-9.\s\-]{7,}.*/m
+      ##all_stuff
     end
 
     def self.parse_date date_str
@@ -147,7 +167,11 @@ module Shovel
     
     def self.strip_description listing
       return if listing.nil?
-      text = listing.css('.descripTxt')[1].text.gsub(/\s+/, ' ').strip.split(' ')
+      desc = listing.css('.descripTxt')[1]
+      return if desc.nil?
+      x    = desc.text
+      return if x.nil?
+      text = x.gsub(/\s+/, ' ').strip.split(' ')
       text.pop  # Remove price.
       text.join(' ')
     end
@@ -155,7 +179,9 @@ module Shovel
     def self.strip_cost listing
       return if listing.nil?
       # Get the last word in the description
-      listing.css('.descripTxt')[1].text.gsub(/\s+/, ' ').strip.split(' ').pop.downcase
+      desc = listing.css('.descripTxt')[1]
+      return if desc.nil?
+      desc.text.gsub(/\s+/, ' ').strip.split(' ').pop.downcase
     end
   end
 end
